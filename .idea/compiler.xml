@@ -6,7 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="trafficAnalyseSystem" />
+        <module name="ejb" />
+        <module name="core" />
+        <module name="web" />
       </profile>
     </annotationProcessing>
   </component>
