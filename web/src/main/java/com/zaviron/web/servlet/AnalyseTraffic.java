@@ -1,5 +1,6 @@
 package com.zaviron.web.servlet;
 
+import ejb.remote.DataAnalysis;
 import ejb.remote.Iot;
 import jakarta.jms.*;
 import jakarta.servlet.ServletException;
@@ -7,15 +8,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.IOException;
 
-@WebServlet(name = "AnalyseTraffic",value = "/traffic")
+@WebServlet(name = "AnalyseTraffic", value = "/traffic")
 public class AnalyseTraffic extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        DataAnalysis dataAnalysis;
         try {
             InitialContext context = new InitialContext();
             QueueConnectionFactory factory = (QueueConnectionFactory) context.lookup("iotConnectionFactory");
@@ -25,6 +28,9 @@ public class AnalyseTraffic extends HttpServlet {
             QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue queue = (Queue) context.lookup("myQueue");
             QueueReceiver receiver = session.createReceiver(queue);
+            InitialContext initialContext = new InitialContext();
+            HttpSession httpSession = req.getSession();
+            dataAnalysis = (DataAnalysis) httpSession.getAttribute("dataAnalysis-session");
             receiver.setMessageListener(new MessageListener() {
                 @Override
                 public void onMessage(Message message) {
@@ -42,12 +48,17 @@ public class AnalyseTraffic extends HttpServlet {
                             System.out.println("Traffic Light Status: " + trafficLightStatus);
                             System.out.println("Latitude: " + latitude);
                             System.out.println("Longitude: " + longitude);
-                        //    totalVehicleSpeed.add(vehicleSpeed);
+                            //    totalVehicleSpeed.add(vehicleSpeed);
 
                             //   System.out.println( vehicleDataAnalysis.calculateAverageVehicleSpeed(totalVehicleSpeed));
+                            double v = dataAnalysis.calculateAverageVehicleSpeed(vehicleSpeed);
+                            System.out.println(v);
+                            resp.getWriter().write((int) v);
                         }
                     } catch (JMSException e) {
                         System.err.println("Error processing message: " + e.getMessage());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
 
 
