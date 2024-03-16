@@ -7,7 +7,8 @@ import jakarta.ejb.Stateless;
 
 public class CartBean implements Cart {
     @Override
-    public void getDetails() {
-        System.out.println("Hello Hasanka");
+    public String getDetails() {
+
+        return "Hello Hasanka";
     }
 }

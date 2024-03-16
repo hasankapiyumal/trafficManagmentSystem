@@ -4,5 +4,5 @@ import jakarta.ejb.Remote;
 
 @Remote
 public interface Cart {
-    public void getDetails();
+    public String getDetails();
 }

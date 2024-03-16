@@ -32,6 +32,7 @@
             <artifactId>ejb</artifactId>
             <version>1.0</version>
             <type>ejb</type>
+
         </dependency>
         <dependency>
             <groupId>com.zaviron</groupId>
