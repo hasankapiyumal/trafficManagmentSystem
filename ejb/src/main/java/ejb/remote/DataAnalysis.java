@@ -6,7 +6,7 @@ import java.util.List;
 @Remote
 public interface DataAnalysis {
     public double calculateAverageVehicleSpeed(Double vehicleSpeed);
-    public String identifyTrafficPattern(String trafficPattern);
+    public String identifyTrafficPattern(Double averageVehicleSpeed);
 
 
 }

@@ -28,7 +28,6 @@ public class AnalyseTraffic extends HttpServlet {
             QueueSession session = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
             Queue queue = (Queue) context.lookup("myQueue");
             QueueReceiver receiver = session.createReceiver(queue);
-            InitialContext initialContext = new InitialContext();
             HttpSession httpSession = req.getSession();
             dataAnalysis = (DataAnalysis) httpSession.getAttribute("dataAnalysis-session");
             receiver.setMessageListener(new MessageListener() {
@@ -52,7 +51,10 @@ public class AnalyseTraffic extends HttpServlet {
 
                             //   System.out.println( vehicleDataAnalysis.calculateAverageVehicleSpeed(totalVehicleSpeed));
                             double v = dataAnalysis.calculateAverageVehicleSpeed(vehicleSpeed);
+                            String identifyTrafficPattern = dataAnalysis.identifyTrafficPattern(v);
+
                             System.out.println(v);
+                            System.out.println(identifyTrafficPattern);
                             resp.getWriter().write((int) v);
                         }
                     } catch (JMSException e) {
