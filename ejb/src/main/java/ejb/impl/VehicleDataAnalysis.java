@@ -1,6 +1,7 @@
 package ejb.impl;
 
 import ejb.remote.DataAnalysis;
+import jakarta.ejb.Singleton;
 import jakarta.ejb.Stateless;
 
 import java.util.ArrayList;
@@ -8,9 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Stateless
-public class VehicleDataAnalysis implements DataAnalysis {
-    private List<Double> vehicleSpeed = new ArrayList<>();
+@Singleton
+public class VehicleDataAnalysis implements DataAnalysis{
+    private  List<Double> vehicleSpeed = new ArrayList<>();
+    private String trafficPattern ;
 
     @Override
     public double calculateAverageVehicleSpeed(Double vehicleSpeed) {
@@ -23,6 +25,7 @@ public class VehicleDataAnalysis implements DataAnalysis {
 
         return avgVehicleSpeed;
 
+
     }
 
     @Override
@@ -30,18 +33,37 @@ public class VehicleDataAnalysis implements DataAnalysis {
 
 
         if (averageVehicleSpeed>50){
-            return "detect high speed traffic ";
+            return trafficPattern= "detect high speed traffic ";
         } else if (averageVehicleSpeed<50|averageVehicleSpeed>40) {
-            return "detect no traffic ";
+            return trafficPattern= "detect no traffic ";
         } else if (averageVehicleSpeed<40| averageVehicleSpeed>30) {
-            return "detect normal traffic";
+            return trafficPattern= "detect normal traffic";
         } else if (averageVehicleSpeed<30|averageVehicleSpeed>20) {
-            return "detect high traffic";
+            return trafficPattern= "detect high traffic";
         } else if (averageVehicleSpeed<20) {
-            return "detect heavy traffic please check issue";
+            return trafficPattern= "detect heavy traffic please check issue";
         }
-        return "not working";
+        return trafficPattern= "not working";
+    }
+
+    @Override
+    public double getAverageVehicleSpeed() {
+
+        double avg_VehicleSpeed=0;
+        for (Double speed:this.vehicleSpeed){
+            avg_VehicleSpeed +=speed/this.vehicleSpeed.size();
+        }
+
+        return avg_VehicleSpeed;
+    }
+
+    @Override
+    public String getIdentifyTrafficPattern() {
+        return trafficPattern;
     }
 
 
 }
+
+
+

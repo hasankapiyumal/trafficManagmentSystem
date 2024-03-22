@@ -7,6 +7,9 @@ import java.util.List;
 public interface DataAnalysis {
     public double calculateAverageVehicleSpeed(Double vehicleSpeed);
     public String identifyTrafficPattern(Double averageVehicleSpeed);
+    double getAverageVehicleSpeed();
+    String getIdentifyTrafficPattern();
+
 
 
 }

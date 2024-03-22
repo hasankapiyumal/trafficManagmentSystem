@@ -1,6 +1,7 @@
 package ejb.message;
 
 import ejb.impl.VehicleDataAnalysis;
+import ejb.remote.DataAnalysis;
 import ejb.remote.Iot;
 import jakarta.ejb.ActivationConfigProperty;
 import jakarta.ejb.MessageDriven;
@@ -10,18 +11,32 @@ import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
 
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@MessageDriven(
-//        activationConfig = {
-//                @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "myQueue")
-//        }
-//)
+@MessageDriven(
+        activationConfig = {
+                @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "myQueue")
+        }
+)
 public class MessageReceiver implements MessageListener {
 
     List<Double> totalVehicleSpeed = new ArrayList<>();
-    VehicleDataAnalysis vehicleDataAnalysis = new VehicleDataAnalysis();
+    InitialContext context;
+    DataAnalysis dataAnalysis;
+
+    {
+        try {
+            context = new InitialContext();
+            dataAnalysis=(DataAnalysis) context.lookup("java:global/ear-1.0/com.zaviron-ejb-1.0/VehicleDataAnalysis");
+
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     @Override
     public void onMessage(Message message) {
@@ -41,7 +56,11 @@ public class MessageReceiver implements MessageListener {
                 System.out.println("Longitude: " + longitude);
                 totalVehicleSpeed.add(vehicleSpeed);
 
-             //   System.out.println( vehicleDataAnalysis.calculateAverageVehicleSpeed(totalVehicleSpeed));
+                 Double averageVehicleSpeed= dataAnalysis.calculateAverageVehicleSpeed(vehicleSpeed);
+                 dataAnalysis.identifyTrafficPattern(averageVehicleSpeed);
+                System.out.println(averageVehicleSpeed);
+                System.out.println(dataAnalysis.getIdentifyTrafficPattern());
+
             }
         } catch (JMSException e) {
             System.err.println("Error processing message: " + e.getMessage());
