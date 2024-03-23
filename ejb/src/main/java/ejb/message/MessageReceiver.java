@@ -58,6 +58,8 @@ public class MessageReceiver implements MessageListener {
 
                  Double averageVehicleSpeed= dataAnalysis.calculateAverageVehicleSpeed(vehicleSpeed);
                  dataAnalysis.identifyTrafficPattern(averageVehicleSpeed);
+                 dataAnalysis.trafficFlowAnalyse(trafficLightStatus,longitude,latitude,vehicleSpeed);
+                 dataAnalysis.mobilityEfficiency(trafficLightStatus,vehicleSpeed);
                 System.out.println(averageVehicleSpeed);
                 System.out.println(dataAnalysis.getIdentifyTrafficPattern());
 

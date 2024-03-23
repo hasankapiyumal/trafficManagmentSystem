@@ -33,6 +33,8 @@ public class AnalyseTraffic extends HttpServlet {
             JsonObject jsonObject =new JsonObject();
             jsonObject.addProperty("averageSpeed",dataAnalysis.getAverageVehicleSpeed());
             jsonObject.addProperty("trafficPattern",dataAnalysis.getIdentifyTrafficPattern());
+            jsonObject.addProperty("trafficFlow",dataAnalysis.getTrafficFlowAnalyse());
+            jsonObject.addProperty("mobilityEfficiency",dataAnalysis.getMobilityEfficiency());
             String json = jsonObject.toString();
             resp.setContentType("application/json");
             resp.getWriter().write(json);

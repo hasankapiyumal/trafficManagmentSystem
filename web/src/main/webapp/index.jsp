@@ -13,6 +13,8 @@
 <body>
 <h1 id="average_speed"></h1>
 <h1 id="traffic_pattern"></h1>
+<h1 id="traffic_flow"></h1>
+<h1 id="mobility_efficiency"></h1>
 <script src="assets/main.js"></script>
 </body>
 </html>

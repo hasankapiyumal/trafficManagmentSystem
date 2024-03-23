@@ -9,6 +9,10 @@ public interface DataAnalysis {
     public String identifyTrafficPattern(Double averageVehicleSpeed);
     double getAverageVehicleSpeed();
     String getIdentifyTrafficPattern();
+    String trafficFlowAnalyse(boolean trafficLightStatus,double longitude ,double latitude,double vehicleSpeed);
+    String getTrafficFlowAnalyse();
+    double mobilityEfficiency(boolean trafficLightStatus,double vehicleSpeed);
+    double getMobilityEfficiency();
 
 
 
